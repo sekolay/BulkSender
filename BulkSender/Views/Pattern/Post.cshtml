@@ -1,0 +1,53 @@
+﻿@model BulkSender.Entity.Pattern
+
+<form id="form1" method="post" action="/Pattern/Post?id=@Model.Id" onsubmit="SubmitForm(this);return false">
+	<div class="col-lg-12">
+		<h3 class="modal_title" style="margin-top: 5px">@ViewBag.Title</h3>
+		<div class="form-group">
+			<label>Şablon Adı</label>
+			@Html.TextBoxFor(x => x.Name, new { @class = "form-control validate"})
+			@Html.ValidationMessageFor(x => x.Name)
+		</div>
+		<div class="form-group">
+			<label>E-Mail Başlığı</label>
+			@Html.TextBoxFor(x => x.EmailTitle, new { @class = "form-control" })
+		</div>
+		<div class="form-group">
+			<label>E-Mail İçeriği</label>
+			<div>Kullanılabilir değişkenler : {email} {firstName} {lastName} {patternId} {appUrl}</div>
+			@Html.TextAreaFor(x => x.EmailBody, new { @class = "form-control" })
+		</div>
+		<div class="form-group">
+			<button type="submit" class="btn btn-success">Kaydet</button>
+		</div>
+	</div>
+</form>
+
+<script src="/Content/js/jquery.validate.js"></script>
+<script src="/Content/js/jquery.validate.unobtrusive.js"></script>
+<script src="/Content/js/ckeditor/ckeditor.js"></script>
+<script src="/Content/js/ckfinder/ckfinder.js"></script>
+
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		CKEDITOR.replace('EmailBody');
+		CKFinder.setupCKEditor(null, '/Content/js/ckfinder/');
+	});
+
+	function SubmitForm(elem) {
+		if ($("#form1").valid()) {
+			$("#EmailBody").val(CKEDITOR.instances.EmailBody.getData());
+			var data = SubmitFormAction(elem);
+			if (data == null) {
+				$("#Name").next().html("İşlem Yapılamadı");
+			}
+			if (data.json.result == 1) 
+				document.location.reload();
+			else
+				$("#Name").next().html(data.json.message);
+		}
+		return true;
+	}
+
+</script>

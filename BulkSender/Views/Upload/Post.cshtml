@@ -1,0 +1,46 @@
+﻿@model BulkSender.Model.FileModel
+
+<form id="form1" method="post" action="/Upload/Post" onsubmit="SubmitForm(this);return false">
+	<div class="col-lg-12">
+		<h3 class="modal_title" style="margin-top: 5px">Dosya Yükle</h3>
+		<div class="form-group">
+			<label>Dosya Seçin...</label>
+			@Html.HiddenFor(x => x.Name, new { @class = "form-control validate"})
+			@Html.ValidationMessageFor(x => x.Name)
+			<button id="btnSubmit" type="button" class="btn btn-success">Gözat</button>
+		</div>
+	</div>
+</form>
+
+<script src="/Content/js/jquery.validate.js"></script>
+<script src="/Content/js/jquery.validate.unobtrusive.js"></script>
+<script src="/Content/js/SimpleAjaxUploader.js"></script>
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		new ss.SimpleUpload({
+			button: 'btnSubmit',
+			url: '/Upload/Post',
+			name: 'Name',
+			responseType: 'json',
+			allowedExtensions: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'],
+			maxSize: 20000048,
+			hoverClass: 'btn-inverse',
+			onSubmit: function (filename, extension) {
+				$("#btnSubmit").attr("disabled", "disabled");
+			},
+			onComplete: function (filename, response) {
+				if (response.json.result == 1) {
+					$("#btnSubmit").text("Yüklendi!");
+					setTimeout(function () {
+						$("#btnSubmit").removeAttr("disabled").text("Gözat");
+					},2000);
+				} else {
+					$("#Name").next().text(response.json.message);
+				}
+				return false;
+			}
+		});
+	});
+	
+</script>

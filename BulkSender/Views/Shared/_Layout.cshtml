@@ -1,0 +1,133 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/Content/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/Content/css/font-awesome.css" rel="stylesheet">
+	<link href="/Content/css/jquery-ui.css" rel="stylesheet">
+	<link href="/Content/css/jquery.ui.theme.css" rel="stylesheet">
+	<link href="/Content/css/jquery.ui.datepicker.css" rel="stylesheet">
+	<link href="/Content/css/aspstate.css" rel="stylesheet">
+
+	<script src="/Content/js/jquery-1.10.2.js"></script>
+	<script src="/Content/js/bootstrap.min.js"></script>
+	<script src="/Content/js/bootbox.min.js"></script>
+	<script src="/Content/js/common.js"></script>
+	<script src="/Content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script src="/Content/js/jquery.dataTables.js"></script>
+	<script src="/Content/js/jquery.dataTables.bootstrap.js"></script>
+	<script src="/Content/js/jquery-ui-1.10.1.min.js"></script>
+	<script src="/Content/js/jquery.ui.datepicker-en.js"></script>
+	<script src="/Content/js/jquery.forceNumericOnly.js"></script>
+	<script src="/Content/js/jquery.validate.js"></script>
+	<script src="/Content/js/jquery.validate.unobtrusive.js"></script>
+
+	<script type="text/javascript">
+		var enabledSettingsMenu = false;
+	</script>
+
+	@RenderSection("header", false)
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0;">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/Group"><h3 class="sa-panel" style="margin:0">BULKSENDER</h3></a>
+			</div>
+
+			<div class="navbar-default navbar-static-side" role="navigation">
+				<div id="leftMenu" class="sidebar-collapse" style="overflow: auto; height: auto">
+					<ul class="nav" id="side-menu">
+						<li>
+							<a href="/Sender"><i class="fa fa-fw fa-envelope"></i> Toplu E-mail Gönderim</a>
+						</li>
+						<li>
+							<a href="/Group"><i class="fa fa-fw fa-users"></i> Gruplar/Kişiler</a>
+						</li>
+						<li>
+							<a href="/Pattern"><i class="fa fa-fw fa-file-text"></i> Şablonlar</a>
+						</li>
+						<li>
+							<a href="/Upload"><i class="fa fa-fw fa-upload"></i> Yüklemeler</a>
+						</li>
+												<li>
+							<a href="/History"><i class="fa fa-fw fa-history"></i> Geçmiş</a>
+						</li>
+												<li>
+							<a href="/Setting"><i class="fa fa-fw fa-wrench"></i> Ayarlar</a>
+						</li>
+						<li>
+							<a href="/Login/Off"><i class="fa fa-fw fa-sign-out"></i> Çıkış</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<div id="page-wrapper">
+			<div class="row">
+				@RenderBody()
+			</div>
+		</div>
+	</div>
+
+	<!-- HIDDEN MODAL(S) -->
+	<div id="modal1" class="modal fade bs-modal-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-body" style="overflow-y: auto">
+					<h3 class="modal_title" style="margin-top: 5px"></h3>
+					<div class="modal_content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modal2" class="modal fade bs-modal-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-body" style="overflow-y: auto">
+					<h3 class="modal_title" style="margin-top: 5px"></h3>
+					<div class="modal_content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modal3" class="modal fade bs-modal-dialog" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-body" style="overflow-y: auto">
+					<h3 class="modal_title" style="margin-top: 5px"></h3>
+					<div class="modal_content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modalSmall1" class="modal fade bs-modal-dialog-small" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-body" style="overflow-y: auto">
+					
+					<div class="modal_content"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="close"></div>
+	<!-- HIDDEN MODAL(E) -->
+
+	@RenderSection("footer", false)
+
+</body>
+
+</html>

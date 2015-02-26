@@ -1,0 +1,81 @@
+﻿@using BulkSender.Entity
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header {
+	<title>Şablonlar</title>
+}
+
+<div id="dashboard" class="col-lg-12">
+	<h1 class="page-header">Şablonlar</h1>
+	<div id="content" class="content">
+		<div class="row">
+			<button onclick="openModalWithAjax('#modal1', '', '/Pattern/Post', '')" style="float: right; margin: -60px 20px 0 10px; width: 120px" type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal1">Yeni Şablon</button>
+		</div>
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTable">
+						<thead>
+							<tr role="row">
+								<th style="width:10%"></th>
+								<th style="width:35%">Şablon Adı</th>
+								<th style="width:40%">E-Mail Başlığı</th>
+								<th style="width:15%">Son Gönderim</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var item in ViewBag.List as List<Pattern>)
+	   { 
+								<tr role="row">
+									<td>
+										<div class="btn-group">
+											<button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">İşlemler <span class="caret"></span></button>
+											<ul class="dropdown-menu">
+												<li><a onclick="openModalWithAjax('#modal1', '', '/Pattern/Post?id=@item.Id', '')" data-toggle="modal" data-target="#modal1" href="#"><i class="fa fa-pencil"></i> Şablonu Düzenle</a></li>
+												<li><a onclick="removeItem(this, '@item.Id')" href="javascript:;"><i class="fa fa-remove"></i> Şablonu Sil</a></li>
+											</ul>
+										</div>
+									</td>
+									<td style="font-weight:bold">@item.Name</td>
+									<td>@item.EmailTitle</td>
+									<td>@item.LastSentDate</td>
+								</tr>
+	   }
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+@section footer {
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var data = $("#AspStatePostForm1").serialize();
+
+			var table = $("#dataTable").dataTable({
+				"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
+				"sPaginationType": "bootstrap",
+				"iDisplayLength": 10,
+				"aaSorting": [[1, "asc"]],
+				"bProcessing": false,
+			});
+		});
+
+		function removeItem(elem, itemKey) {
+			$(elem).parent().parent().parent().parent().parent().fadeOut('slow');
+			$.ajax({
+				"type": "POST",
+				"url": "/Pattern/Delete?id=" + itemKey + "",
+				"async": true,
+				"error": function () {
+					alert("İşlem Gerçekleştirilemedi");
+				}
+			});
+		}
+	</script>
+}

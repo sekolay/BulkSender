@@ -1,0 +1,113 @@
+﻿@using BulkSender.Entity
+@model BulkSender.Entity.Pattern
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section header {
+	<title>Toplu Gönderim</title>
+}
+
+<div id="dashboard" class="col-lg-12">
+	<h1 class="page-header">Toplu E-Mail Gönderim</h1>
+	<form id="form1" method="post" action="/Sender/Post" onsubmit="startMail(this)">
+		<div id="content" class="content">
+			@if (Request.QueryString["completed"] == "true"){<div class="alert alert-success">Gönderim işlemi başarıyla tamamlandı!<br />Toplam Giden E-mail: <b>@Request.QueryString["totalSuccess"] Adet</b></div>}
+
+
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="form-group">
+							<label>Alıcı Grupları Seçin</label>
+							<select id="groupList" name="groupList" class="form-control" onchange="calcGroupCount()" multiple="multiple">
+								@foreach (var item in ViewBag.GroupList as List<Group>)
+		{<option value="@item.Id" count="@item.ContactTotal">[@item.ContactTotal Alıcı] @item.Name</option>}
+							</select>
+						</div>
+						<br />
+						<div class="form-group">
+							<label>E-Mail Şablonu Seçin</label>
+							<select id="patternId" name="patternId" class="form-control" onchange="getEmailContent()">
+								<option>Lütfen Seçin...</option>
+								@foreach (var item in ViewBag.PatternList as List<Pattern>)
+		{<option title="@item.EmailTitle" value="@item.Id">@item.Name</option>}
+							</select>
+						</div>
+						<br />
+						<div class="form-group">
+							<label>Toplam Gönderilecek Kişi Sayısı</label><br />
+							<span id="totalReceiver">0</span>
+						</div>
+						<br />
+						<div class="form-group">
+							<label>E-Mail Başlığı</label>
+							<div id="mailTitle">Şablon Seçilmedi...</div>
+						</div>
+						<br />
+						<div class="form-group">
+							<label>Header</label>
+							<textarea name="emailHeader" class="form-control">@BulkSender.Common.SettingManager.GetValue("EmailHeader")</textarea>
+						</div>
+						<br />
+						<div class="form-group">
+							<label>Footer</label>
+							<textarea name="emailFooter" class="form-control">@BulkSender.Common.SettingManager.GetValue("EmailFooter")</textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row"><label>Önizleme</label></div>
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="form-group" id="mailBody">Şablon Seçilmedi...</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<button id="btnSend" type="submit" class="btn btn-success">Mail Gönderimini Başlat</button>
+			</div>
+			<br />
+			<br />
+
+		</div>
+	</form>
+</div>
+
+
+@section footer {
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+		});
+
+		function startMail() {
+			$("#btnSend").attr("disabled", "disabled");
+		}
+
+		function calcGroupCount() {
+			iTotal = 0;
+			var itemList = $("#groupList option:selected");
+			for (i = 0; i < itemList.length; i++) {
+				iTotal += parseInt($(itemList[i]).attr("count"));
+			}
+			$("#totalReceiver").text(iTotal);
+		}
+
+		function getEmailContent() {
+			var patternId = $("#patternId option:selected").val();
+			var patternTitle = $("#patternId option:selected").attr("title");
+			$("#mailTitle").html(patternTitle);
+			$.ajax({
+				url: "/Sender/GetEmailContent?patternId=" + patternId + "",
+				async: false,
+				success: function (data) {
+					$("#mailBody").html(data);
+				}
+			});
+		}
+
+	</script>
+}
